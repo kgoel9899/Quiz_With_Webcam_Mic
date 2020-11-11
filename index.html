@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Game</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="index.html" class="navbar-brand">Quiz Game</a>
+            </div>
+        </div>
+    </nav>
+    <div id="banner-image">
+        <div class="container">
+            <center>
+                <div id="banner-content">
+                    <div id="timer"></div>
+                    <div id="qna" class="hide">
+                        <h3 id="ques"></h3>
+                        <h5 id="options"></h5>
+                    </div>
+                    <div id="firstContent">
+                        <h1>Welcome to our Quiz Game</h1>
+                        <p>You will find the best questions here to test your general knowledge</p>
+                    </div>
+                    <button class="btn btn-danger btn-lg active" id="start">Ready? Please choose the difficulty!</button>
+                    <div class="row" id="top">
+                        <div class="col-xs-4">
+                            <button class="btn btn-primary btn-lg active" id="1" onclick="choose(this.id)">Easy</button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button class="btn btn-info btn-lg active" id="2" onclick="choose(this.id)">Medium</button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button class="btn btn-warning btn-lg active" id="3" onclick="choose(this.id)">Hard</button>
+                        </div>
+                    </div>
+                </div>
+            </center>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
