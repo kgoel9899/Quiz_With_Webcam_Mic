@@ -13,6 +13,41 @@ let options = document.getElementById("options");
 let timer = document.getElementById("timer");
 let firstContent = document.getElementById("firstContent");
 let topp = document.getElementById("top");
+let one = document.getElementById("1");
+let two = document.getElementById("2");
+let three = document.getElementById("3");
+let vidSave = document.getElementById("save");
+let mediaRecorder;
+let constraintObj = { 
+  audio: true, 
+  video: true
+};
+navigator.mediaDevices.getUserMedia(constraintObj)
+  .then(function(mediaStreamObj) {
+    one.disabled = false;
+    two.disabled = false;
+    three.disabled = false;
+    start.disabled = false;
+    mediaRecorder = new MediaRecorder(mediaStreamObj);
+    let video = document.querySelector('video');
+    video.srcObject = mediaStreamObj;
+    video.play();
+    mediaRecorder.start();
+    let chunks = [];
+    mediaRecorder.ondataavailable = function(ev) {
+      chunks.push(ev.data);
+    }
+    mediaRecorder.onstop = (ev)=>{
+      let blob = new Blob(chunks, { 'type' : 'video/mp4;' });
+      chunks = [];
+      let videoURL = window.URL.createObjectURL(blob);
+      vidSave.src = videoURL;
+    }
+  })
+  .catch(function(err) { 
+      console.log(err.name, err.message); 
+  });
+
 function choose(id) {
   if(id === "1") maxi = easy;
   else if(id === "2") maxi = medium;
@@ -60,18 +95,16 @@ function curr(clicked) {
   }
   show();
 }
-function gameOver() {
+async function gameOver() {
   clearInterval(one_sec);
   timer.classList.add("hide");
   firstContent.classList.remove("hide");
   firstContent.children[0].innerText = "Successfully Submitted";
   firstContent.children[1].innerText = "Final Score is: " + score + " out of " + questions.length + ", Congratulations!";
   qna.classList.add("hide");
-  start.innerText = "Restart? Please choose the difficulty!";
-  start.classList.remove("hide");
-  topp.classList.remove("hide");
   rem = maxi;
   score = 0;
+  mediaRecorder.stop();
 }
 function timing() {
   timer.innerHTML = "Time Remaining: " + rem + " seconds";
