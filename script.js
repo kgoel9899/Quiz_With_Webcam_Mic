@@ -12,14 +12,17 @@ let ques = document.getElementById("ques");
 let options = document.getElementById("options");
 let timer = document.getElementById("timer");
 let firstContent = document.getElementById("firstContent");
-let topp = document.getElementById("top");
+let topp = document.getElementsByClassName("top");
 let one = document.getElementById("1");
 let two = document.getElementById("2");
 let three = document.getElementById("3");
 let vidSave = document.getElementById("save");
+var namee = document.getElementById("namee");
+var email = document.getElementById("email");
+var submit = document.getElementById("submit");
 let mediaRecorder;
 let constraintObj = { 
-  audio: true, 
+  audio: false, 
   video: true
 };
 navigator.mediaDevices.getUserMedia(constraintObj)
@@ -42,6 +45,7 @@ navigator.mediaDevices.getUserMedia(constraintObj)
       chunks = [];
       let videoURL = window.URL.createObjectURL(blob);
       vidSave.src = videoURL;
+      video.classList.add("hide");
     }
   })
   .catch(function(err) { 
@@ -58,7 +62,8 @@ function startGame() {
   num = 0;
   rem = maxi;
   start.classList.add("hide");
-  topp.classList.add("hide");
+  topp[0].classList.add("hide");
+  topp[1].classList.add("hide");
   firstContent.classList.add("hide");
   qna.classList.remove("hide");
   timer.classList.remove("hide");
@@ -95,16 +100,22 @@ function curr(clicked) {
   }
   show();
 }
-async function gameOver() {
+function gameOver() {
   clearInterval(one_sec);
   timer.classList.add("hide");
   firstContent.classList.remove("hide");
   firstContent.children[0].innerText = "Successfully Submitted";
   firstContent.children[1].innerText = "Final Score is: " + score + " out of " + questions.length + ", Congratulations!";
   qna.classList.add("hide");
+  topp[1].classList.remove("hide");
   rem = maxi;
   score = 0;
   mediaRecorder.stop();
+}
+function final() {
+  // console.log("finish");
+  // console.log(namee.value);
+  // console.log(email.value);
 }
 function timing() {
   timer.innerHTML = "Time Remaining: " + rem + " seconds";
