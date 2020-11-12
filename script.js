@@ -17,9 +17,10 @@ let one = document.getElementById("1");
 let two = document.getElementById("2");
 let three = document.getElementById("3");
 let vidSave = document.getElementById("save");
-var namee = document.getElementById("namee");
-var email = document.getElementById("email");
-var submit = document.getElementById("submit");
+let namee = document.getElementById("namee");
+let submit = document.getElementById("submit");
+let headName = document.getElementById("headName");
+let headScore = document.getElementById("headScore");
 let mediaRecorder;
 let constraintObj = { 
   audio: false, 
@@ -32,9 +33,9 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     three.disabled = false;
     start.disabled = false;
     mediaRecorder = new MediaRecorder(mediaStreamObj);
-    let video = document.querySelector('video');
-    video.srcObject = mediaStreamObj;
-    video.play();
+    let video = document.getElementById("left-video");
+    // video.srcObject = mediaStreamObj;
+    // video.play();
     mediaRecorder.start();
     let chunks = [];
     mediaRecorder.ondataavailable = function(ev) {
@@ -46,6 +47,9 @@ navigator.mediaDevices.getUserMedia(constraintObj)
       let videoURL = window.URL.createObjectURL(blob);
       vidSave.src = videoURL;
       video.classList.add("hide");
+      mediaStreamObj.getTracks().forEach(function(track) {
+        track.stop();
+      });
     }
   })
   .catch(function(err) { 
@@ -61,9 +65,9 @@ function choose(id) {
 function startGame() {
   num = 0;
   rem = maxi;
+  score = 0;
   start.classList.add("hide");
   topp[0].classList.add("hide");
-  topp[1].classList.add("hide");
   firstContent.classList.add("hide");
   qna.classList.remove("hide");
   timer.classList.remove("hide");
@@ -105,17 +109,19 @@ function gameOver() {
   timer.classList.add("hide");
   firstContent.classList.remove("hide");
   firstContent.children[0].innerText = "Successfully Submitted";
-  firstContent.children[1].innerText = "Final Score is: " + score + " out of " + questions.length + ", Congratulations!";
+  firstContent.children[1].classList.add("hide");
+  // firstContent.children[1].innerText = "Final Score is: " + score + " out of " + questions.length + ", Congratulations!";
   qna.classList.add("hide");
   topp[1].classList.remove("hide");
+  // topp[2].classList.remove("hide");
   rem = maxi;
-  score = 0;
   mediaRecorder.stop();
 }
 function final() {
-  // console.log("finish");
-  // console.log(namee.value);
-  // console.log(email.value);
+  topp[1].classList.add("hide");
+  topp[2].classList.remove("hide");
+  headName.innerText = "Name: " + namee.value;
+  headScore.innerText = "Score: " + score + " out of " + questions.length;
 }
 function timing() {
   timer.innerHTML = "Time Remaining: " + rem + " seconds";

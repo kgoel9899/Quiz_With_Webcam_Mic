@@ -13,10 +13,9 @@ body {
 	color: #f8f8f8;
 }
 #banner-content {
-	padding-top: 6%;
-	padding-bottom: 6%;
-	margin-top: 12%;
-	margin-bottom: 12%;
+	padding-top: 5%;
+	padding-bottom: 5%;
+	margin-top: 7%;
 	background-color: rgba(0, 0, 0, 0.7);
 	max-width: 660px;
 }
@@ -30,8 +29,7 @@ body {
 	margin-top: 20px;
 }
 .all {
-	margin-top: 12%;
-	margin-bottom: 12%;
+	margin-top: 5%;
 }
 video {
 	width: 100%;
@@ -39,4 +37,11 @@ video {
 }
 input {
 	color: black;
+}
+#highest {
+	color: black;
+}
+.captured {
+	max-width: 300px;
+	max-height: 200px;
 }
