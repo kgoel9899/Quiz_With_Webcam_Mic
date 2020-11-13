@@ -44,7 +44,6 @@ navigator.mediaDevices.getUserMedia(constraints)
     mediaRecorder.start();
     mediaRecorder.onstop = (ev)=>{
       video.classList.add("hide");
-      save.classList.remove("hide");
       mediaStreamObj.getTracks().forEach(function(track) {
         track.stop();
       });
@@ -104,19 +103,20 @@ function curr(clicked) {
 function gameOver() {
   clearInterval(one_sec);
   timer.classList.add("hide");
-  firstContent.classList.remove("hide");
-  firstContent.children[0].innerText = "Successfully Submitted";
-  firstContent.children[1].classList.add("hide");
   qna.classList.add("hide");
   topp[1].classList.remove("hide");
   rem = maxi;
   mediaRecorder.stop();
 }
 function final() {
+  firstContent.classList.remove("hide");
+  firstContent.children[0].innerText = "Successfully Submitted";
+  firstContent.children[1].classList.add("hide");
   topp[1].classList.add("hide");
   topp[2].classList.remove("hide");
   headName.innerText = "Name: " + namee.value;
   headScore.innerText = "Score: " + score + " out of " + questions.length;
+  save.classList.remove("hide");
 }
 function download() {
   const blob = new Blob(recordedBlobs, {type: "video/webm"});
@@ -124,7 +124,7 @@ function download() {
   const a = document.createElement("a");
   a.style.display = "none";
   a.href = url;
-  a.download = "test.webm";
+  a.download = namee.value + ".webm";
   document.body.appendChild(a);
   a.click();
   setTimeout(() => {
@@ -145,21 +145,23 @@ function timing() {
 }
 let questions = [
   {
-    q: "Inside which HTML element do we put the JavaScript?",
+  
+    q: "HTML stands for?",
     a: [
-      { text: "javascript", correct: false },
-      { text: "script", correct: true },
-      { text: "js", correct: false },
-      { text: "jQuery", correct: false }
+      { text: "High Text Markup Language", correct: false },
+      { text: "Hyper Text Markup Language", correct: true },
+      { text: "Hyper Tabular Markup Language", correct: false },
+      { text: "None of these", correct: false }
     ]
   },
   {
-    q: "Where is the correct place to insert JavaScript?",
+
+    q: "Correct HTML tag for the largest heading is?",
     a: [
-      { text: "The Head Section", correct: false },
-      { text: "The Body Section", correct: false },
-      { text: "In an External File", correct: false },
-      { text: "All of the Above", correct: true }
+      { text: "<head>", correct: false },
+      { text: "<heading>", correct: false },
+      { text: "<h6>", correct: false },
+      { text: "<h1>", correct: true }
     ]
   },
   {
@@ -170,12 +172,12 @@ let questions = [
     ]
   },
   {
-    q: 'How do you write "Hello World" in an alert box?',
+    q: 'www is based on which model?',
     a: [
-      { text: 'msg("Hello World");', correct: false },
-      { text: 'prompt("Hello World");', correct: false },
-      { text: 'alertBox("Hello World");', correct: false },
-      { text: 'alert("Hello World");', correct: true }
+      { text: 'Local-server', correct: false },
+      { text: 'Client-server', correct: true },
+      { text: '3-tier', correct: false },
+      { text: 'None of these', correct: false }
     ]
   },
   {
@@ -188,30 +190,30 @@ let questions = [
     ]
   },
   {
-    q: 'How do you call a function named "myFunction"?',
+    q: 'How can you open a link in a new browser window?',
     a: [
-      { text: "call myFunction()", correct: false },
-      { text: "read myFunction()", correct: false },
-      { text: "myFunction()", correct: true },
-      { text: "run.myFunction()", correct: false }
+      { text: "< a href = 'url' target = 'new'>", correct: false },
+      { text: "<a href = 'url'.new>", correct: false },
+      { text: "<a href = 'url' target= '_blank'>", correct: true },
+      { text: "<a href = 'url' target ='open'>", correct: false }
     ]
   },
   {
-    q: "How do you write an IF statement in JavaScript?",
+    q: "Can the element <First> be replaced with <first>?",
     a: [
-      { text: "if (i === 5)", correct: true },
-      { text: "if i = 5 then", correct: false },
-      { text: "if i === 5 then", correct: false },
-      { text: "if (i = 5)", correct: false }
+      { text: "No, they represent different elements altogether", correct: false },
+      { text: "Both are same", correct: true },
+      { text: "First is only correct", correct: false },
+      { text: "first is only correct", correct: false }
     ]
   },
   {
-    q: "!= means what in javascript?",
+    q: "What does error 404 or Not Found error while accessing a URL mean?",
     a: [
-      { text: "Or", correct: false },
-      { text: "And", correct: false },
-      { text: "Plus and Equal To", correct: false },
-      { text: "Not Equal To", correct: true }
+      { text: "The server could not find the requested URL", correct: true },
+      { text: "Requested HTML file is not available", correct: false },
+      { text: "The path to the interpreter of the script is not valid", correct: false },
+      { text: "The requested HTML file does not have sufficient permissions", correct: false }
     ]
   },
   {
@@ -221,6 +223,15 @@ let questions = [
       { text: "{ }", correct: false },
       { text: "[ ]", correct: true },
       { text: "# #", correct: false }
+    ]
+  },
+  {
+    q: "Which of these is a client server application?",
+    a: [
+      { text: "Web browsing", correct: false },
+      { text: "E-mail", correct: false },
+      { text: "Internet Chat", correct: false },
+      { text: "All of the above", correct: true }
     ]
   }
 ];
