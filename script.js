@@ -21,33 +21,30 @@ let submit = document.getElementById("submit");
 let headName = document.getElementById("headName");
 let headScore = document.getElementById("headScore");
 let video = document.getElementById("video");
-let vidSave = document.getElementById("save");
+let save = document.getElementById("save");
 let mediaRecorder;
-let constraintObj = { 
-  audio: false, 
+let recordedBlobs;
+let constraints = { 
+  audio: true, 
   video: true
 };
-navigator.mediaDevices.getUserMedia(constraintObj)
+navigator.mediaDevices.getUserMedia(constraints)
   .then(function(mediaStreamObj) {
     one.disabled = false;
     two.disabled = false;
     three.disabled = false;
-    start.disabled = false;
-    mediaRecorder = new MediaRecorder(mediaStreamObj);
+    let options = {mimeType: "video/webm;codecs=vp9,opus"};
+    mediaRecorder = new MediaRecorder(mediaStreamObj, options);
     video.srcObject = mediaStreamObj;
     video.play();
-    mediaRecorder.start();
-    let chunks = [];
-    mediaRecorder.ondataavailable = function(ev) {
-      chunks.push(ev.data);
+    recordedBlobs = [];
+    mediaRecorder.ondataavailable = function(event) {
+      if (event.data && event.data.size > 0) recordedBlobs.push(event.data);
     }
+    mediaRecorder.start();
     mediaRecorder.onstop = (ev)=>{
-      let blob = new Blob(chunks, { 'type' : 'video/mp4;' });
-      chunks = [];
       video.classList.add("hide");
-      vidSave.classList.remove("hide");
-      let videoURL = window.URL.createObjectURL(blob);
-      vidSave.src = videoURL;
+      save.classList.remove("hide");
       mediaStreamObj.getTracks().forEach(function(track) {
         track.stop();
       });
@@ -56,7 +53,6 @@ navigator.mediaDevices.getUserMedia(constraintObj)
   .catch(function(err) { 
       console.log(err.name, err.message); 
   });
-
 function choose(id) {
   if(id === "1") maxi = easy;
   else if(id === "2") maxi = medium;
@@ -67,9 +63,9 @@ function startGame() {
   num = 0;
   rem = maxi;
   score = 0;
-  start.classList.add("hide");
   topp[0].classList.add("hide");
   firstContent.classList.add("hide");
+  start.classList.add("hide");
   qna.classList.remove("hide");
   timer.classList.remove("hide");
   show();
@@ -111,10 +107,8 @@ function gameOver() {
   firstContent.classList.remove("hide");
   firstContent.children[0].innerText = "Successfully Submitted";
   firstContent.children[1].classList.add("hide");
-  // firstContent.children[1].innerText = "Final Score is: " + score + " out of " + questions.length + ", Congratulations!";
   qna.classList.add("hide");
   topp[1].classList.remove("hide");
-  // topp[2].classList.remove("hide");
   rem = maxi;
   mediaRecorder.stop();
 }
@@ -124,6 +118,20 @@ function final() {
   headName.innerText = "Name: " + namee.value;
   headScore.innerText = "Score: " + score + " out of " + questions.length;
 }
+function download() {
+  const blob = new Blob(recordedBlobs, {type: "video/webm"});
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.style.display = "none";
+  a.href = url;
+  a.download = "test.webm";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => {
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }, 100);
+}
 function timing() {
   timer.innerHTML = "Time Remaining: " + rem + " seconds";
   if (rem <= 0) {
@@ -131,7 +139,7 @@ function timing() {
     show();
   }
   else {
-    rem -= 1;
+    rem--;
     one_sec = setTimeout(timing, 1000);
   }
 }
