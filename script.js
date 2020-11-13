@@ -16,11 +16,12 @@ let topp = document.getElementsByClassName("top");
 let one = document.getElementById("1");
 let two = document.getElementById("2");
 let three = document.getElementById("3");
-let vidSave = document.getElementById("save");
 let namee = document.getElementById("namee");
 let submit = document.getElementById("submit");
 let headName = document.getElementById("headName");
 let headScore = document.getElementById("headScore");
+let video = document.getElementById("video");
+let vidSave = document.getElementById("save");
 let mediaRecorder;
 let constraintObj = { 
   audio: false, 
@@ -33,9 +34,8 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     three.disabled = false;
     start.disabled = false;
     mediaRecorder = new MediaRecorder(mediaStreamObj);
-    let video = document.getElementById("left-video");
-    // video.srcObject = mediaStreamObj;
-    // video.play();
+    video.srcObject = mediaStreamObj;
+    video.play();
     mediaRecorder.start();
     let chunks = [];
     mediaRecorder.ondataavailable = function(ev) {
@@ -44,9 +44,10 @@ navigator.mediaDevices.getUserMedia(constraintObj)
     mediaRecorder.onstop = (ev)=>{
       let blob = new Blob(chunks, { 'type' : 'video/mp4;' });
       chunks = [];
+      video.classList.add("hide");
+      vidSave.classList.remove("hide");
       let videoURL = window.URL.createObjectURL(blob);
       vidSave.src = videoURL;
-      video.classList.add("hide");
       mediaStreamObj.getTracks().forEach(function(track) {
         track.stop();
       });
