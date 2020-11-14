@@ -34,6 +34,18 @@ navigator.mediaDevices.getUserMedia(constraints)
     two.disabled = false;
     three.disabled = false;
     let options = {mimeType: "video/webm;codecs=vp9,opus"};
+    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+    console.error(`${options.mimeType} is not supported`);
+    options = {mimeType: "video/webm;codecs=vp8,opus"};
+    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+      console.error(`${options.mimeType} is not supported`);
+      options = {mimeType: "video/webm"};
+      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+        console.error(`${options.mimeType} is not supported`);
+        options = {mimeType: ""};
+      }
+    }
+  }
     mediaRecorder = new MediaRecorder(mediaStreamObj, options);
     video.srcObject = mediaStreamObj;
     video.play();
