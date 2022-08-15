@@ -37,20 +37,7 @@ navigator.mediaDevices.getUserMedia(constraints)
     one.disabled = false;
     two.disabled = false;
     three.disabled = false;
-    let options = {mimeType: "video/webm;codecs=vp9,opus"};
-    // if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-    //   console.error(`${options.mimeType} is not supported`);
-    //   options = {mimeType: "video/webm;codecs=vp8,opus"};
-    //   if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-    //     console.error(`${options.mimeType} is not supported`);
-    //     options = {mimeType: "video/webm"};
-    //     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-    //       console.error(`${options.mimeType} is not supported`);
-    //       options = {mimeType: ""};
-    //     }
-    //   }
-    // }
-    mediaRecorder = new MediaRecorder(mediaStreamObj, options);
+    mediaRecorder = new MediaRecorder(mediaStreamObj);
     recordedBlobs = [];
     mediaRecorder.ondataavailable = function(event) {
       if (event.data && event.data.size > 0) recordedBlobs.push(event.data);
@@ -145,13 +132,10 @@ function download() {
   const blob = new Blob(recordedBlobs, {type: "video/webm"});
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement("a");
-  a.style.display = "none";
   a.href = url;
   a.download = namee.value + ".webm";
-  document.body.appendChild(a);
   a.click();
   setTimeout(() => {
-    document.body.removeChild(a);
     window.URL.revokeObjectURL(url);
   }, 100);
 }
