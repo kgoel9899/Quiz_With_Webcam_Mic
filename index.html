@@ -10,49 +10,47 @@
 </head>
 <body>
     <div id="banner-image">
-        <div class="container-fluid">
-            <center>
-                    <div id="banner-content">
-                        <div id="timer"></div>
-                        <div id="qna" class="hide">
-                            <h3 id="ques"></h3>
-                            <h5 id="options"></h5>
-                        </div>
-                        <div id="firstContent">
-                            <h1>Welcome to our Quiz Game</h1>
-                            <h4>You will find the best questions here to test your knowledge</h4>
-                        </div>
-                        <button class="btn btn-danger btn-lg active" id="start">Ready? Please choose the difficulty!</button>
-                        <div class="row top">
-                            <div class="col-xs-4">
-                                <button class="btn btn-primary btn-lg active" id="1" onclick="choose(this.id)" disabled=true>Easy</button>
-                            </div>
-                            <div class="col-xs-4">
-                                <button class="btn btn-info btn-lg active" id="2" onclick="choose(this.id)" disabled=true>Medium</button>
-                            </div>
-                            <div class="col-xs-4">
-                                <button class="btn btn-warning btn-lg active" id="3" onclick="choose(this.id)" disabled=true>Hard</button>
-                            </div>
-                        </div>
-                        <div class="row top hide">
-                            <label for="name">Name</label>
-                            <input type="text" name="name" id="namee" required />
-                            <button id="submit" class="btn btn-default" onclick="final()">Submit</button>
-                        </div>
-                        <div class="row top hide">
-                            <h3>Test Results</h3>
-                            <h4 id="headName"></h4>
-                            <h4 id="headScore"></h4>
-                        </div>
+        <center>
+            <div id="banner-content">
+                <div id="timer" class="hide"></div>
+                <div id="qna" class="hide">
+                    <h3 id="ques"></h3>
+                    <h5 id="options"></h5>
+                </div>
+                <div id="firstContent">
+                    <h1>Welcome to our Quiz Game</h1>
+                    <h4>You will find the best questions here to test your knowledge :)</h4>
+                </div>
+                <button class="btn btn-danger btn-lg active" id="start">Ready? Please choose the difficulty!</button>
+                <div class="row top">
+                    <div class="col-xs-4">
+                        <button class="btn btn-primary btn-lg active" id="1" onclick="choose(this.id)" disabled=true title="You will get 50 seconds to answer each question.">Easy</button>
                     </div>
-                    <div class="captured all">
-                        <video id="video" playsinline autoplay muted></video>
+                    <div class="col-xs-4">
+                        <button class="btn btn-info btn-lg active" id="2" onclick="choose(this.id)" disabled=true title="You will get 25 seconds to answer each question.">Medium</button>
                     </div>
-                    <div class="captured all">
-                        <button id="save" class="btn btn-success btn-lg hide" onclick="download()">Download the recording</button>
+                    <div class="col-xs-4">
+                        <button class="btn btn-warning btn-lg active" id="3" onclick="choose(this.id)" disabled=true title="You will get 10 seconds to answer each question.">Hard</button>
                     </div>
-            </center>
-        </div>
+                </div>
+                <div class="row top hide">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="namee" required />
+                    <button id="submit" class="btn btn-default" onclick="final()">Submit</button>
+                </div>
+                <div class="row top hide">
+                    <h3>Test Results</h3>
+                    <h4 id="headName"></h4>
+                    <h4 id="headScore"></h4>
+                </div>
+            </div>
+            <div class="captured all">
+                <video id="video" muted></video>
+            </div>
+            <div class="captured all">
+                <button id="save" class="btn btn-success btn-lg hide" onclick="download()">Download the recording</button>
+            </div>
+        </center>
     </div>
     <script src="script.js"></script>
 </body>

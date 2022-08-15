@@ -24,37 +24,38 @@ let video = document.getElementById("video");
 let save = document.getElementById("save");
 let mediaRecorder;
 let recordedBlobs;
+
 let constraints = { 
   audio: true, 
   video: true
 };
+
 navigator.mediaDevices.getUserMedia(constraints)
   .then(function(mediaStreamObj) {
+    video.srcObject = mediaStreamObj;
+    video.play();
     one.disabled = false;
     two.disabled = false;
     three.disabled = false;
     let options = {mimeType: "video/webm;codecs=vp9,opus"};
-    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-    console.error(`${options.mimeType} is not supported`);
-    options = {mimeType: "video/webm;codecs=vp8,opus"};
-    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-      console.error(`${options.mimeType} is not supported`);
-      options = {mimeType: "video/webm"};
-      if (!MediaRecorder.isTypeSupported(options.mimeType)) {
-        console.error(`${options.mimeType} is not supported`);
-        options = {mimeType: ""};
-      }
-    }
-  }
+    // if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+    //   console.error(`${options.mimeType} is not supported`);
+    //   options = {mimeType: "video/webm;codecs=vp8,opus"};
+    //   if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+    //     console.error(`${options.mimeType} is not supported`);
+    //     options = {mimeType: "video/webm"};
+    //     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+    //       console.error(`${options.mimeType} is not supported`);
+    //       options = {mimeType: ""};
+    //     }
+    //   }
+    // }
     mediaRecorder = new MediaRecorder(mediaStreamObj, options);
-    video.srcObject = mediaStreamObj;
-    video.play();
     recordedBlobs = [];
     mediaRecorder.ondataavailable = function(event) {
       if (event.data && event.data.size > 0) recordedBlobs.push(event.data);
     }
-    mediaRecorder.start();
-    mediaRecorder.onstop = (ev)=>{
+    mediaRecorder.onstop = ()=>{
       video.classList.add("hide");
       mediaStreamObj.getTracks().forEach(function(track) {
         track.stop();
@@ -64,12 +65,15 @@ navigator.mediaDevices.getUserMedia(constraints)
   .catch(function(err) { 
       console.log(err.name, err.message); 
   });
+
 function choose(id) {
   if(id === "1") maxi = easy;
   else if(id === "2") maxi = medium;
   else maxi = hard;
+  mediaRecorder.start();
   startGame();
 }
+
 function startGame() {
   num = 0;
   rem = maxi;
@@ -81,8 +85,11 @@ function startGame() {
   timer.classList.remove("hide");
   show();
 }
+
 function show() {
-  while (options.firstChild) options.removeChild(options.firstChild);
+  while (options.firstChild) {
+    options.removeChild(options.firstChild);
+  }
   rem = maxi;
   clearInterval(one_sec);
   timing();
@@ -103,6 +110,7 @@ function show() {
     num++;
   }
 }
+
 function curr(clicked) {
   let question = questions[num - 1];
   for(let i = 0; i < question.a.length; i++) {
@@ -112,6 +120,7 @@ function curr(clicked) {
   }
   show();
 }
+
 function gameOver() {
   clearInterval(one_sec);
   timer.classList.add("hide");
@@ -120,6 +129,7 @@ function gameOver() {
   rem = maxi;
   mediaRecorder.stop();
 }
+
 function final() {
   firstContent.classList.remove("hide");
   firstContent.children[0].innerText = "Successfully Submitted";
@@ -130,6 +140,7 @@ function final() {
   headScore.innerText = "Score: " + score + " out of " + questions.length;
   save.classList.remove("hide");
 }
+
 function download() {
   const blob = new Blob(recordedBlobs, {type: "video/webm"});
   const url = window.URL.createObjectURL(blob);
@@ -144,20 +155,25 @@ function download() {
     window.URL.revokeObjectURL(url);
   }, 100);
 }
+
 function timing() {
+  one_sec = setInterval(period, 1000);
   timer.innerHTML = "Time Remaining: " + rem + " seconds";
-  if (rem <= 0) {
-    rem = maxi;
-    show();
-  }
-  else {
-    rem--;
-    one_sec = setTimeout(timing, 1000);
+  rem--;
+  function period() {
+    timer.innerHTML = "Time Remaining: " + rem + " seconds";
+    if (rem <= 0) {
+      rem = maxi;
+      show();
+    }
+    else {
+      rem--;
+    }
   }
 }
+
 let questions = [
   {
-  
     q: "HTML stands for?",
     a: [
       { text: "High Text Markup Language", correct: false },
